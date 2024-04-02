@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- Fonts -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/Franklin Gothic Medium Regular.ttf">
+    <!-- Animate.CSS  -->
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="assets/css/design.css">
+    <link rel="stylesheet" href="assets/css/utiles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <title>CodeA</title>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+            <img src="assets/imgs/private.png" width="30" /> CodeA
+        </a>
+
+
+        <div class="dropdown left">
+
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-language"></i> English
+            </button>
+        </div>
+    </nav>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-form-title" style="background: url(assets/imgs/bg-01.jpg);">
+                    <span class="login100-form-title-1">
+                        Sign In
+                    </span>
+                    <h4 style="text-align: center;color: #fff;padding-top: 10px;">Code Central Accounts (CCA)</h4>
+                </div>
+
+                <div class="alert {{.AlertType}}" role="alert" style="margin: 4px;"> {{.ResponseMessage}}</div>
+
+                <form class="login100-form validate-form" method="POST" action="Login" style="padding:  30px 40px;">
+
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Domain</label>
+                        </div>
+                        <select name=domain class="custom-select" id="inputGroupSelect01">
+                            {{range .Domains}}
+                            <option value="{{.DomainID}}">{{.DomainName}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                        <span class="label-input100">Username</span>
+                        <input class="input100" type="text" name="login" autofocus autocomplete="off"
+                            placeholder="Enter username">
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                        <span class="label-input100">Password</span>
+                        <input class="input100" type="password" name="password" autocomplete="off"
+                            placeholder="Enter password">
+                        <span class="focus-input100"></span>
+                    </div>
+
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" name=submitlogin value="Login">
+                            Login
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 70px;"></div>
+    <footer class="p-3 bg-footer text-center text-white fixed-bottom">
+
+        Copyright &copy; Code for computer software
+        <script>document.write(new Date().getFullYear());</script>
+    </footer>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="assets/js/vendors/jquery-3.2.1.min.js"></script>
+
+    <script src="assets/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="assets/js/main.js"></script>

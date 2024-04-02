@@ -1,0 +1,143 @@
+{{template "header.html" .}}
+
+
+{{template "include.html" .}}
+
+
+<div class=container>
+    <div class="alert {{.AlertType}}" role="alert" style="margin: 4px;"> {{.ResponseMessage}}</div>
+
+    <div class=card>
+        <div class="card-header"> Domains </div>
+        <div class="card-body">
+
+            {{if eq .View "add"}}
+            <h3>Add New Domain</h3>
+
+            <form method="post" action="Domains" class="login100-form ">
+
+                <div class="wrap-input100 validate-input m-b-26" data-validate="login is required">
+                    <span class="label-input100">Domain name </span>
+                    <input class="input100" type="text" name="domain" placeholder="Enter the domain">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-26" data-validate="login is required">
+                    <span class="label-input100">Default Page </span>
+                    <input class="input100" type="text" name="defaultpage" placeholder="Enter default-page">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="flex-sb-m w-full p-b-30">
+                    <div class="contact100-form-checkbox">
+                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="islocal" value="1">
+                        <label class="label-checkbox100" for="ckb1">
+                            Is Local
+                        </label>
+                    </div>
+
+                </div>
+
+
+                <div class="wrap-input100 validate-input m-b-26" data-validate="login is required">
+                    <span class="label-input100">Web service URL (For remote authentication domains) </span>
+                    <input class="input100" type="text" name="remoteurl" placeholder="Enter URL">
+                    <span class="focus-input100"></span>
+                </div>
+
+
+                <input type="submit" name="add" value="Add" class="btn btn-primary" />
+            </form>
+            <hr />
+            {{else}}
+            <a href='Domains?view=add' class='btn btn-primary pull-right' style='margin-bottom:10px;'>Add New Domain</a>
+            {{end}}
+
+            {{if eq .View "edit"}}
+
+            <h3>Update Domain</h3>
+
+            <form method=post action="Domains">
+                <table>
+                    <input type="hidden" name="domainid" value={{.DomainInfo.DomainID}} /><br />
+
+                    <tr>
+                        <td> Domain name</td>
+                        <td> <input type="text" name="domain" id="domain" value="{{.DomainInfo.DomainName}}" /></td>
+                    </tr>
+
+                    <tr>
+                        <td>Default Page</td>
+                        <td> <input type="text" name="defaultpage" id="defaultpage"
+                                value="{{.DomainInfo.DefaultPage}}" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Web Service URL</td>
+                        <td> <input type="text" name="remoteurl" value="{{.DomainInfo.RemoteURL}}" /></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input type="checkbox" name="islocal" {{if .DomainInfo.IsLocal }}checked{{end}}
+                                value="1" />Is
+                            Local</td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input type="checkbox" name="isenabled" {{if .DomainInfo.IsEnabled }}checked{{end}}
+                                value="1" />Is
+                            Enabled</td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="submit" name="update" value="Update" class="button" /></td>
+                    </tr>
+                    {{if eq .DomainInfo.DefaultDomain false}}
+                    <input type="hidden" name="removedomain" id="removedomain" />
+                    <tr>
+                        <td> <input type="submit" name="remove" value="Remove" class="red button"
+                                onclick="confirmDelete();" />
+                        </td>
+                    </tr>
+                    {{end}}
+                </table>
+
+            </form>
+            <hr />
+
+            <script>
+                function confirmDelete() {
+                    r = confirm("Are you sure you want to remove " + document.getElementById("domain").value);
+                    if (r == true) {
+                        document.getElementById("removedomain").value = "1";
+                        form.submit();
+                    }
+                }
+            </script>
+            {{end}}
+            <table class=table>
+                <tr>
+                    <th>ID</th>
+                    <th>Domain Name</th>
+                    <th>Local/Remote</th>
+                    <th>Enabled</th>
+                    <th></th>
+                </tr>
+                {{range .Domains}}
+                <tr>
+                    <td>{{.DomainID}}</td>
+                    <td>{{.DomainName}}</td>
+                    {{if .IsLocal }} <td>Local</td> {{else}}<td>Remote</td>{{end}}
+                    {{if .IsEnabled }} <td bgcolor=#aaFFaa>Yes</td>{{else}} <td bgcolor=#FFAAAA>No</td>{{end}}
+                    <td><a href='Domains?view=edit&domainid={{.DomainID}}'>Edit</a></td>
+                </tr>
+                {{end}}
+            </table>
+
+        </div>
+    </div>
+</div>
+{{template "footer.html" .}}

@@ -1,0 +1,80 @@
+<html lang=en>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Code Central Accounts (CCA)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+  <meta name="author" content="ADD AUTHOR INFORMATION">
+  <meta name="robots" content="index, follow">
+
+  <!-- icons -->
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel='shortcut icon' href='/img/icon.png'>
+
+  <!-- Override CSS file - add your own CSS rules -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+  <div class=header>
+    <div class=container>
+      <table>
+        <tr bgcolor=#aaaaac>
+          <td class=titletd><img src='assets/imgs/private.png' /> </td>
+          <td>Version: {{.Version}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class='content'>
+    <div class='container'>
+      <div class='main'>
+
+
+        {{if .IsConfigExists}}
+        <br />System configuration
+        {{else}}
+        <br />First time setup
+        {{end}}
+
+        <form method=POST>
+          <table>
+            <tr>
+              <td>Database server</td>
+              <td><input type=text name=server value='{{.Server}}' /></td>
+            </tr>
+
+            <tr>
+              <td>Database name</td>
+              <td><input type=text name=database value='{{.Database}}' /></td>
+            </tr>
+
+            <tr>
+              <td>Database user</td>
+              <td><input type=text name=dbuser value='{{.User}}' /></td>
+            </tr>
+
+            <tr>
+              <td>Database user password</td>
+              <td><input type=text name=dbpassword value='{{.Password}}' /></td>
+            </tr>
+
+            <tr>
+              <td><input type=submit name=set value='Set config' /></td>
+            </tr>
+          </table>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+  <div class='footer'>
+    Copyright &copy; Code for computer software 2017 2019
+    <img src='assets/imgs/small-code.png' width=40 />
+  </div>
+</body>
+
+</html>

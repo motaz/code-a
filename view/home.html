@@ -1,0 +1,28 @@
+{{template "header.html" .}}
+
+
+{{template "include.html" .}}
+
+<div class="container" style="margin-top: 5px;">
+
+    <div class="card-columns m-3" style="margin-top: 0px;margin-bottom: 0px;">
+        <h3> Code Central Accounts (CCA) </h3>
+        <hr />
+    </div>
+
+    <div class="card-columns m-3" style="margin-bottom: 20px;">
+
+        <a href="{{.Url}}">
+            <div class="card text-center">
+                <i class="fa fa-5x fa-ticket mt-3"></i>
+                <div class="card-body">
+                    <h5 class="card-title">{{.Domain}} </h5>
+                </div>
+            </div>
+        </a>
+
+
+    </div>
+</div>
+
+{{template "footer.html" .}}

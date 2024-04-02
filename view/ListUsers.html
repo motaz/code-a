@@ -1,0 +1,152 @@
+{{template "header.html" .}}
+
+
+{{template "include.html" .}}
+
+
+<div class=container>
+    <div class="alert {{.AlertType}}" role="alert" style="margin: 4px;"> {{.ResponseMessage}}</div>
+    {{if eq .Modify ""}}
+
+    <div class="card">
+        <div class="card-header">List Users </div>
+        <div class="card-body">
+            <form method=post>
+                <div class="input-group mb-3">
+
+                    <input type="text" name=search class="form-control" aria-label="Default" value="{{.Search}}"
+                        aria-describedby="inputGroup-sizing-default" placeholder="Search By login name">
+
+                    {{$v:= .DomainID}}
+                    <select name=domain class="custom-select" id="inputGroupSelect01">
+                        <option value="" disabled selected> All </option>
+                        {{range .Domains}}
+                        <option value="{{.DomainID}}" {{if eq $v .DomainID}} selected{{end}}>{{.DomainName}}</option>
+                        {{end}}
+                    </select>
+                    <select name=usertype class="custom-select" id="inputGroupSelect01">
+                        <option value="0" disabled selected> All </option>
+                        <option value="1" {{if eq 1 .UserType}} selected{{end}}>IsAdmin</option>
+                        <option value="2" {{if eq 2 .UserType}} selected{{end}}> Normal User</option>
+                    </select>
+                    &emsp;<input type=checkbox name=showall value=1 {{if ne .Showall "" }} checked {{end}} /> Show All
+                    &emsp;
+                    <div class="input-group-append">
+                        <input type=submit class="btn btn-outline-secondary" type=submit name=searchButton value=Get />
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        {{if ne .SearchButton ""}}
+        <div class="card-body">
+            <table class=table>
+                <tr>
+                    <th>Login</th>
+                    <th>User name</th>
+                    <th>Domain</th>
+                    <th>Is Admin</th>
+                    <th>Enabled</th>
+                    <th></th>
+                </tr>
+                {{range .UserInfo}}
+                <tr>
+                    <td>{{.Login}}</td>
+                    <td style="font-size:12">{{.Fullname}}</td>
+
+                    <td>{{.DomainName}}</td>
+                    {{if .Isadmin}} <td>yes</td>{{else}} <td>No</td>{{end}}
+                    {{if .IsEnabled}} <td bgcolor=#AAFFAA>yes</td>{{else}} <td bgcolor=#FFAAAA>No</td>{{end}}
+
+                    <td>
+                        <form method=post>
+                            <input type=hidden name=userid value="{{.Userid}}" />
+                            <input type=submit name=modify value=Modify class="btn btn-outline-primary" />
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </table>
+        </div>
+        {{end}}
+        {{end}}
+        {{if ne .Modify ""}}
+        <div class="card-body">
+            <h4>Modify user information</h4>
+            <form method=post>
+                <table>
+                    <input type=hidden name=userid value="{{.User.Userid}}" /><br />
+
+                    <tr>
+                        <td>Login</td>
+                        <td><input name=login value='{{.User.Login}}' /></td>
+                    </tr>
+
+                    <tr>
+                        <td>Full name</td>
+                        <td><input name=fullname value='{{.User.Fullname}}' /></td>
+                    </tr>
+                    <tr>
+                        <td>Domain</td>
+                        <td>
+                            <select name=domain class="custom-select" id="inputGroupSelect01">
+                                {{$v:= .User.DomainID}}
+                                {{range .Domains}}
+                                <option value="{{.DomainID}}" {{if eq $v .DomainID}} selected{{end}}>{{.DomainName}}
+                                </option>
+                                {{end}}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type=checkbox name=isenabled value=1 {{if .User.IsEnabled}} checked {{end}} />Is
+                            Enabled</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type=checkbox name=isadmin value=1 {{if eq .User.Isadmin 1}} checked {{end}} />Is
+                            Admin</td>
+                    </tr>
+                    <tr>
+                        <td><input type=submit name=update value=Update class="btn btn-primary" /></td>
+                    </tr>
+
+                </table>
+
+            </form>
+        </div>
+        {{if .User.IsLocal}}
+        <div class=card-body>
+            <hr>
+            <form method=POST>
+                <h3>Reset password for: {{.User.Login}}</h3>
+                <form method=post>
+                    <input type=hidden name=userid value="{{.User.Userid}}" /><br />
+                    <table>
+                        <tr>
+                            <td>New password </td>
+                            <td><input type=password name=password /></rd>
+                        </tr>
+                        <tr>
+                            <td>Confirm password </td>
+                            <td><input type=password name=confirmpassword /></td>
+                        </tr>
+                        <input type=hidden name=login value='{{.User.Login}}' />
+                        <tr>
+                            <td><input type=submit name=resetpassword value=Change class="btn btn-primary" /></td>
+                        </tr>
+                    </table>
+                </form>
+        </div>
+        <hr style='height:50px;'>
+        {{end}}
+        {{end}}
+    </div>
+
+</div>
+
+
+</div>
+{{template "footer.html" .}}

@@ -1,0 +1,67 @@
+<html lang=en>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Code Central Accounts (CCA)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+    <meta name="author" content="ADD AUTHOR INFORMATION">
+    <meta name="robots" content="index, follow">
+
+    <!-- icons -->
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <link rel='shortcut icon' href='/img/icon.png'>
+
+    <!-- Override CSS file - add your own CSS rules -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class=header>
+        <div class=container>
+            <table>
+                <tr bgcolor=#aaaaac>
+                    <td class=titletd><img src='img/title.jpg' /> </td>
+                    <td>Version: {{.Version}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class='content'>
+        <div class='container'>
+            <div class='main'>
+
+
+                {{if .IsAuthenticate}}
+                {{if .Success}}
+                <form method=POST id=myForm action='{{.Returnto}}'>
+                    <input type=hidden name=sessionid value='{{.NewSessionID}}' />
+                    <input type=submit name=login id=login value='Login' class='blue button' />
+                </form>
+                <script>
+                    window.onload = function () {
+                        document.getElementById('myForm').submit();
+                    }
+                </script>
+                {{else}}
+                <p class=errormessage>Invalid session </p>
+                {{end}}
+                {{else}}
+                <form method=POST>
+                    <input type=hidden value='{{.Key}}' name=key />
+                    <input type=hidden value='{{.Returnto}}' name=returnto />
+                    <input type=submit name=authenticate value='Allow Authentication' class=button />
+                </form>
+                {{end}}
+
+            </div>
+        </div>
+    </div>
+    <div class='footer'>
+        Copyright &copy; Code for computer software 2017 2019
+        <img src='img/small-code.png' width=40 />
+    </div>
+</body>
+
+</html>

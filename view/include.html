@@ -1,0 +1,32 @@
+<div class="nav-bar">
+    <div class="container">
+        <ul class="nav">
+
+            <li><a href="Home">
+                    <font {{if eq .Page "home" }} style="color:lime;font-weight: bold ;" {{end}}>Home</font>
+                </a></li>
+
+            {{if .IsAdmin}}
+
+            <li><a href="AddUser">
+                    <font {{if eq .Page "adduser" }} style='color:lime;font-weight: bold;' {{end}}>Add User</font>
+                </a></li>
+
+            <li><a href="ListUsers">
+                    <font {{if eq .Page "listusers" }} style='color:lime;font-weight: bold;' {{end}}>List Users</font>
+                </a></li>
+
+            <li><a href="Domains">
+                    <font {{if eq .Page "domains" }} style='color:lime;font-weight: bold;' {{end}}>Domains</font>
+                </a></li>
+
+            {{end}}
+
+            <li><a href="ChangePassword">
+                    <font {{if eq .Page "myadmin" }} style='color:lime;font-weight: bold;' {{end}}>My Admin</font>
+                </a></li>
+
+        </ul>
+    </div>
+</div>
+&emsp;
