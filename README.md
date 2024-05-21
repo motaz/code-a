@@ -3,3 +3,7 @@ Central authentication module: contains users management and authentication web 
 It could be used as users directory for other systems instead of adding users credentials in every system in the same company or insitute
 
 <img src='codea.png' />
+
+---
+- Calling Authentication web service /CheckLogin
+<img src='loginRequest.png' />
