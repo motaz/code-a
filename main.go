@@ -32,6 +32,7 @@ func main() {
 	mux.Handle(appPath+"/assets/", http.StripPrefix(appPath, http.FileServer(http.FS(assets))))
 
 	// Portal Pathes
+	mux.HandleFunc("/", redirect)
 	mux.HandleFunc(appPath+"/", controller.CheckUser(controller.Home))
 	mux.HandleFunc(appPath+"/Login", controller.Login)
 	mux.HandleFunc(appPath+"/Logout", controller.Logout)
@@ -53,4 +54,8 @@ func main() {
 	if err != nil {
 		util.WriteLog("Error in listening: " + err.Error())
 	}
+}
+
+func redirect(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, appPath, http.StatusTemporaryRedirect)
 }

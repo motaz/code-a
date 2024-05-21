@@ -23,9 +23,9 @@ func InitDB() (err error) {
 		util.WriteErrorLog("Error in InitDB connection: " + err.Error())
 		return
 	}
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(10)
-	db.SetConnMaxLifetime(time.Hour)
+	db.SetMaxOpenConns(30)
+	db.SetMaxIdleConns(30)
+	db.SetConnMaxLifetime(time.Minute * 2)
 
 	go checklog()
 	return
