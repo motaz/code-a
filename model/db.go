@@ -1,7 +1,7 @@
 package model
 
 import (
-	"codea/util"
+	"code-a/util"
 	"database/sql"
 	"fmt"
 	"time"

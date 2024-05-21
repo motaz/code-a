@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"time"
 
-	"codea/model"
-	"codea/types"
-	"codea/util"
+	"code-a/model"
+	"code-a/types"
+	"code-a/util"
 
 	"github.com/motaz/codeutils"
 )
@@ -44,7 +44,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 				ip := GetRemoteAdd(r)
 				key := util.GetMD5(r.Header.Get("user-agent") +
 					now.String() + "==7B")
-				result := doLogin(domaininfo.DomainName, login, password, ip, key, 24, "")
+				var session SessionInfoType
+
+				result := doLogin(domaininfo.DomainName, login, password, ip, key, 24, session)
 				if result.ErrorCode == 401 || result.ErrorCode == 400 {
 					util.WriteErrorLog("error in  doLogin " + result.Message)
 
@@ -105,7 +107,8 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "Login", http.StatusFound)
 }
 
-func doLogin(domainName, userLogin, userPassword, ip, key string, hoursToLive int, sessionInfo string) (loginRes types.Login) {
+func doLogin(domainName, userLogin, userPassword, ip, key string, hoursToLive int, sessionInfo SessionInfoType) (loginRes types.Login) {
+
 	if (userLogin == "") || (userPassword == "") {
 		loginRes = setError("Empty username or password", 400)
 		return
@@ -159,7 +162,9 @@ func setError(errorMessage string, errorCode int) types.Login {
 	return result
 }
 
-func localAuthentication(domaininfo types.DomainType, username, password string, loginRes types.Login, domain, ip string, hoursTolive int, key, sessionInfo string) types.Login {
+func localAuthentication(domaininfo types.DomainType, username, password string, loginRes types.Login, domain, ip string,
+	hoursTolive int, key string, sessionInfo SessionInfoType) types.Login {
+
 	var success bool
 	var userID int
 	op, _ := model.CheckUser(domaininfo.DomainName, username, password)
@@ -182,7 +187,7 @@ func localAuthentication(domaininfo types.DomainType, username, password string,
 	return loginRes
 }
 
-func newSession(success bool, hoursToLive int, loginRes types.Login, key string, userID int, domaininfo types.DomainType, username, sessionInfo string) string {
+func newSession(success bool, hoursToLive int, loginRes types.Login, key string, userID int, domaininfo types.DomainType, username string, sessionInfo SessionInfoType) string {
 	if success && hoursToLive > 0 {
 		loginRes.SessionID = generateNewSession(key, userID, domaininfo.DomainName, username, hoursToLive, sessionInfo)
 		return loginRes.SessionID
@@ -197,11 +202,13 @@ func LogInvalidAuthentication(resultText, username, domain, ip string) (bool, er
 	return sucess, err
 }
 
-func generateNewSession(key string, userID int, domainname, username string, hoursToLive int, sessionInfo string) string {
+func generateNewSession(key string, userID int, domainname, username string, hoursToLive int, sessionInfo SessionInfoType) string {
+
 	sessionID := getRandomSessionID(key)
 	sessionExpiration := time.Now().Add(time.Duration(int(time.Hour) * hoursToLive)).Format("2006-01-02 15:04:05")
 	hashedSessionID := hashSession(key, sessionID)
-	success, _ := model.InsertNewSession(hashedSessionID, userID, domainname, username, sessionExpiration, sessionInfo)
+	session, _ := json.Marshal(sessionInfo)
+	success, _ := model.InsertNewSession(hashedSessionID, userID, domainname, username, sessionExpiration, string(session))
 
 	if success {
 		return sessionID
@@ -230,7 +237,7 @@ func getLeftPart(key string) string {
 	return leftSide
 }
 
-func remoteAuthentication(username string, password string, domainInfo types.DomainType, loginRes types.Login, domain, ip string, hoursToLive int, key string, userID int, sessionInfo string) types.Login {
+func remoteAuthentication(username string, password string, domainInfo types.DomainType, loginRes types.Login, domain, ip string, hoursToLive int, key string, userID int, sessionInfo SessionInfoType) types.Login {
 	success := false
 	req := make(map[string]interface{})
 	req["username"] = username

@@ -6,15 +6,16 @@
 package main
 
 import (
-	"codea/controller"
-	"codea/model"
-	"codea/util"
+	"code-a/controller"
+	"code-a/model"
+	"code-a/util"
 	"embed"
+	"fmt"
 	"net/http"
 )
 
 const appPath = "/codea"
-const VERSION = "1.2.0 r3-Mar"
+const VERSION = "1.2.1 r20-May"
 
 //go:embed view
 var view embed.FS
@@ -47,7 +48,7 @@ func main() {
 	mux.HandleFunc(appPath+"/CheckLogin", controller.CheckLoginAPI)
 	mux.HandleFunc(appPath+"/CheckSession", controller.CheckSessionAPI)
 	mux.HandleFunc(appPath+"/RemoveSession", controller.RemoveSessionAPI)
-
+	fmt.Println("http://localhost:2024")
 	err := http.ListenAndServe(":2024", mux)
 	if err != nil {
 		util.WriteLog("Error in listening: " + err.Error())

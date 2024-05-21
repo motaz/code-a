@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"codea/model"
-	"codea/types"
-	"codea/util"
+	"code-a/model"
+	"code-a/types"
+	"code-a/util"
 	"net/http"
 )
 
@@ -21,7 +21,9 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 
 		if result.Success {
 			authenticate.Success = true
-			authenticate.NewSessionID = generateNewSession(authenticate.Key, 0, result.DomainName, result.Username, 4, "")
+			var session SessionInfoType
+			authenticate.NewSessionID = generateNewSession(authenticate.Key, 0, result.DomainName, result.Username, 4,
+				session)
 		}
 	} else {
 		authenticate.IsAuthenticate = false

@@ -1,8 +1,8 @@
 package model
 
 import (
-	"codea/types"
-	"codea/util"
+	"code-a/types"
+	"code-a/util"
 	"database/sql"
 	"errors"
 )

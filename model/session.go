@@ -1,12 +1,13 @@
 package model
 
 import (
-	"codea/types"
-	"codea/util"
+	"code-a/types"
+	"code-a/util"
 	"database/sql"
 )
 
 func InsertNewSession(sessionID string, userID int, domainname string, username string, sessionExpiration string, sessionInfo string) (bool, error) {
+
 	stmt := "insert into sessions (sessionID, userID, username, domainname, sessionTime, sessionExpiration, sessionInfo) values (?, ?, ?, ?, now(), ?, ?)"
 	if sessionInfo == "" {
 		sessionInfo = "{}"

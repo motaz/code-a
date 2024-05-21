@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"codea/model"
+	"code-a/model"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -9,12 +9,17 @@ import (
 	"strings"
 )
 
+type SessionInfoType struct {
+	UserID int `json:"userid"`
+}
+
 type LoginRequest struct {
-	Key      string `json:"key"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Domain   string `json:"domain"`
-	Hours    any    `json:"hours"`
+	Key         string          `json:"key"`
+	Username    string          `json:"username"`
+	Password    string          `json:"password"`
+	Domain      string          `json:"domain"`
+	Hours       any             `json:"hours"`
+	SessionInfo SessionInfoType `json:"sessioninfo"`
 }
 
 type Response struct {
@@ -30,6 +35,7 @@ type LoginResponse struct {
 }
 
 func CheckLoginAPI(w http.ResponseWriter, r *http.Request) {
+
 	setJSONHeader(w)
 	var req LoginRequest
 	var res LoginResponse
@@ -67,7 +73,7 @@ func CheckLoginAPI(w http.ResponseWriter, r *http.Request) {
 
 	ip := GetRemoteAdd(r)
 
-	loginres := doLogin(req.Domain, req.Username, req.Password, ip, req.Key, hours, "")
+	loginres := doLogin(req.Domain, req.Username, req.Password, ip, req.Key, hours, req.SessionInfo)
 	if loginres.Success {
 		res.Success, res.Message, res.ErrorCode = true, "successful login", 0
 		res.Sessionid = loginres.SessionID

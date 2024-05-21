@@ -1,4 +1,4 @@
-module codea
+module code-a
 
 go 1.21
 

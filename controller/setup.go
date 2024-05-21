@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"codea/model"
-	"codea/types"
-	"codea/util"
+	"code-a/model"
+	"code-a/types"
+	"code-a/util"
 	"embed"
 	"fmt"
 	"net/http"

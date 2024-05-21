@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"codea/model"
-	"codea/util"
+	"code-a/model"
+	"code-a/util"
 	"net/http"
 	"strconv"
 )

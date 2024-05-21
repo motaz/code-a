@@ -1,13 +1,15 @@
 package controller
 
 import (
-	"codea/model"
-	"codea/types"
-	"codea/util"
+	"code-a/model"
+	"code-a/types"
+	"code-a/util"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/motaz/codeutils"
 )
 
 func SetCookieValue(w http.ResponseWriter, name, value string) {
@@ -36,6 +38,7 @@ func RemoveCookie(w http.ResponseWriter, r *http.Request, name string) {
 }
 
 func CheckSession(r *http.Request, userid int) bool {
+
 	spices := GetCookieValue(r, "spices")
 	util.WriteLog("checkSession: userID: "+strconv.Itoa(userid)+", spices: "+spices, "ca")
 	user, _ := model.GetUserInfo(userid)
@@ -45,7 +48,6 @@ func CheckSession(r *http.Request, userid int) bool {
 	}
 
 	currentSpices := GetSpices(r, user.Userid, user)
-	util.WriteLog("current: "+currentSpices+", spices: "+spices, "ca")
 	return currentSpices == spices
 }
 
@@ -68,15 +70,11 @@ func GetSpices(request *http.Request, userID int, userInfo types.UserInfo) strin
 	return currentSpices
 }
 
-func GetRemoteAdd(r *http.Request) string {
-	remoteAddress := r.Header.Get("X-REAL-IP")
-	if remoteAddress == "" {
-		remoteAddress = r.Header.Get("X-FORWARDED-FOR")
-	}
-	if remoteAddress == "" {
-		remoteAddress = "127.0.0.1"
-	}
-	return remoteAddress
+func GetRemoteAdd(r *http.Request) (ip string) {
+
+	ip = codeutils.GetRemoteIP(r)
+
+	return
 }
 
 func isSessionValid(r *http.Request) bool {
@@ -96,6 +94,7 @@ func isSessionValid(r *http.Request) bool {
 	result.ID = userID
 	return result.Success
 }
+
 func CheckUser(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if isSessionValid(r) {

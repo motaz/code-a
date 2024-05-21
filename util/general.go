@@ -24,11 +24,13 @@ func WriteErrorLog(text ...string) {
 }
 
 func IsConfigFileExist() bool {
-	return codeutils.IsFileExists("codeA.ini")
+
+	return codeutils.IsFileExists("config.ini")
 }
 
 func GetConfigValue(key, defaulValue string) string {
-	value := codeutils.GetConfigValue("codeA.ini", key)
+
+	value := codeutils.GetConfigValue("config.ini", key)
 	if value == "" {
 		return defaulValue
 	}
