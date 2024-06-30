@@ -68,7 +68,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 							http.Redirect(w, r, page, http.StatusFound)
 
 						} else {
-							if userInfo.Isadmin == 1 {
+							if userInfo.Isadmin {
 								http.Redirect(w, r, "Home", http.StatusFound)
 
 							} else {

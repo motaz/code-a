@@ -19,13 +19,13 @@
 
                     {{$v:= .DomainID}}
                     <select name=domain class="custom-select" id="inputGroupSelect01">
-                        <option value="" disabled selected> All </option>
+                        <option value=""  selected> All </option>
                         {{range .Domains}}
                         <option value="{{.DomainID}}" {{if eq $v .DomainID}} selected{{end}}>{{.DomainName}}</option>
                         {{end}}
                     </select>
                     <select name=usertype class="custom-select" id="inputGroupSelect01">
-                        <option value="0" disabled selected> All </option>
+                        <option value="0"  selected> All </option>
                         <option value="1" {{if eq 1 .UserType}} selected{{end}}>IsAdmin</option>
                         <option value="2" {{if eq 2 .UserType}} selected{{end}}> Normal User</option>
                     </select>
@@ -57,7 +57,7 @@
 
                     <td>{{.DomainName}}</td>
                     {{if .Isadmin}} <td>yes</td>{{else}} <td>No</td>{{end}}
-                    {{if .IsEnabled}} <td bgcolor=#AAFFAA>yes</td>{{else}} <td bgcolor=#FFAAAA>No</td>{{end}}
+                    <td  {{if .IsEnabled}} bgcolor=#AAFFAA> yes</td>{{else}} bgcolor=#FFAAAA>No</td>{{end}}
 
                     <td>
                         <form method=post>
@@ -106,7 +106,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td><input type=checkbox name=isadmin value=1 {{if eq .User.Isadmin 1}} checked {{end}} />Is
+                        <td><input type=checkbox name=isadmin value=1 {{if  .User.Isadmin }} checked {{end}} />Is
                             Admin</td>
                     </tr>
                     <tr>

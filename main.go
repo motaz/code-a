@@ -15,7 +15,7 @@ import (
 )
 
 const appPath = "/codea"
-const VERSION = "1.2.1 r20-May"
+const VERSION = "1.2.2 r30-June"
 
 //go:embed view
 var view embed.FS

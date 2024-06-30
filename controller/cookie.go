@@ -111,7 +111,7 @@ func setHeader(w http.ResponseWriter, r *http.Request, tabName string) types.Hom
 	home.UserID, _ = strconv.Atoi(userID)
 	home.User, _ = model.GetUserInfo(home.UserID)
 	home.Page = tabName
-	home.IsAdmin = home.User.Isadmin == 1
+	home.IsAdmin = home.User.Isadmin
 	home.Username = GetCookieValue(r, "user")
 
 	return home

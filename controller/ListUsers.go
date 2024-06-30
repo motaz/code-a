@@ -9,6 +9,7 @@ import (
 )
 
 func ListUsers(w http.ResponseWriter, r *http.Request) {
+
 	var err error
 	home := setHeader(w, r, "listusers")
 
@@ -37,8 +38,8 @@ func ListUsers(w http.ResponseWriter, r *http.Request) {
 		if r.FormValue("update") != "" {
 			var userinfo types.UserInfo
 			userinfo.Userid, _ = strconv.Atoi(r.FormValue("userid"))
-			userinfo.Isadmin, _ = strconv.Atoi(r.FormValue("isadmin"))
-			userinfo.Isenabled, _ = strconv.Atoi(r.FormValue("isenabled"))
+			userinfo.Isadmin = r.FormValue("isadmin") == "1"
+			userinfo.IsEnabled = r.FormValue("isenabled") == "1"
 			userinfo.DomainID, _ = strconv.Atoi(r.FormValue("domain"))
 			userinfo.Login = r.FormValue("login")
 			userinfo.Fullname = r.FormValue("fullname")
@@ -48,7 +49,7 @@ func ListUsers(w http.ResponseWriter, r *http.Request) {
 			if err == nil {
 				home.AlertType = "alert-success"
 				home.ResponseMessage = "Information Updated"
-				if userinfo.Isenabled == 0 {
+				if !userinfo.IsEnabled {
 					deleteSessionByUsername(userinfo.Login, r.FormValue("domain"))
 				}
 			} else {
@@ -62,20 +63,15 @@ func ListUsers(w http.ResponseWriter, r *http.Request) {
 		home.Search = r.FormValue("search")
 		home.SearchButton = r.FormValue("searchButton")
 		home.Modify = r.FormValue("modify")
-		DomainID, err := strconv.Atoi(r.FormValue("domain"))
-		if err != nil {
-			util.WriteErrorLog("error in parse DomainID ", err.Error())
-		}
-		UserType, err := strconv.Atoi(r.FormValue("usertype"))
-		if err != nil {
-			util.WriteErrorLog("error in parse UserType ", err.Error())
-		}
+		DomainID, _ := strconv.Atoi(r.FormValue("domain"))
+
+		UserType, _ := strconv.Atoi(r.FormValue("usertype"))
+
 		if home.Modify != "" {
 			userid, _ := strconv.Atoi(r.FormValue("userid"))
 			home.User, _ = model.GetUserInfo(userid)
 			home.Domains, _ = model.GetDomains(true)
 		}
-
 		if home.Search == "" && UserType == 0 && DomainID == 0 {
 			showall := r.FormValue("showall") != ""
 			home.UserInfo, _ = model.GetAllUsers(showall)

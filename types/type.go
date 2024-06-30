@@ -35,8 +35,7 @@ type UserInfo struct {
 	Password      string
 	Fullname      string
 	Info          string
-	Isenabled     int
-	Isadmin       int
+	Isadmin       bool
 	DomainID      int
 	DomainName    string
 	IsLocal       bool

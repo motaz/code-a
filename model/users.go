@@ -67,14 +67,17 @@ func ThereIsUser() (success bool, err error) {
 
 func GetUserInfo(userid int) (user types.UserInfo, err error) {
 
-	query := "select * from users inner join domains on domains.domainid = users.domainid where userID = ? "
+	query := `SELECT userID, login, fullname, info, users.isEnabled, isAdmin, 
+		users.domainID, domainName FROM CodeA.users
+		INNER JOIN CodeA.domains ON domains.domainid = users.domainid ` +
+		`where userID = ? `
 
 	rows := db.QueryRow(query, userid)
 	var remoteURL sql.NullString
 	var defaultPage sql.NullString
-	err = rows.Scan(&user.Userid, &user.Login, &user.Password,
-		&user.Fullname, &user.Info, &user.Isenabled, &user.Isadmin, &user.DomainID, &user.DomainID, &user.DomainName, &user.IsLocal,
-		&user.DefaultDomain, &user.IsEnabled, &remoteURL, &defaultPage)
+	err = rows.Scan(&user.Userid, &user.Login, &user.Fullname, &user.Info,
+		&user.IsEnabled, &user.Isadmin, &user.DomainID, &user.DomainName)
+
 	if remoteURL.Valid {
 		user.RemoteURL = remoteURL.String
 	}
@@ -101,7 +104,7 @@ func CheckUser(domain, login, password string) (types.Login, error) {
 	var remoteURL sql.NullString
 	var defaultPage sql.NullString
 	err := rows.Scan(&user.Userid, &user.Login, &user.Password,
-		&user.Fullname, &user.Info, &user.Isenabled, &user.Isadmin, &user.DomainID, &user.DomainID, &user.DomainName, &user.IsLocal,
+		&user.Fullname, &user.Info, &user.IsEnabled, &user.Isadmin, &user.DomainID, &user.DomainID, &user.DomainName, &user.IsLocal,
 		&user.DefaultDomain, &user.IsEnabled, &remoteURL, &defaultPage)
 	if remoteURL.Valid {
 		user.RemoteURL = remoteURL.String
@@ -144,14 +147,16 @@ func UserChangePassword(userID, password string) error {
 }
 
 func GetAllUsers(showall bool) ([]types.UserInfo, error) {
+
 	stmt := ""
 	if !showall {
-		stmt = "where users.isenabled = 1\n"
+		stmt = ` where users.isenabled =1 `
 	}
-	query := "select * from users\n" +
-		"inner join domains on domains.domainid = users.domainid\n" +
+	query := `SELECT userID, login, fullname, info, users.isEnabled, isAdmin, 
+		users.domainID, domainName FROM CodeA.users
+		INNER JOIN CodeA.domains ON domains.domainid = users.domainid ` +
 		stmt +
-		" order by userid"
+		` order by userid`
 
 	rows, err := db.Query(query)
 	if err != nil {
@@ -163,18 +168,10 @@ func GetAllUsers(showall bool) ([]types.UserInfo, error) {
 	users := []types.UserInfo{}
 	for rows.Next() {
 		var user types.UserInfo
-		var remoteURL sql.NullString
 		var info sql.NullString
-		var defaultPage sql.NullString
-		err = rows.Scan(&user.Userid, &user.Login, &user.Password,
-			&user.Fullname, &info, &user.Isenabled, &user.Isadmin, &user.DomainID, &user.DomainID, &user.DomainName, &user.IsLocal,
-			&user.DefaultDomain, &user.IsEnabled, &remoteURL, &defaultPage)
-		if remoteURL.Valid {
-			user.RemoteURL = remoteURL.String
-		}
-		if defaultPage.Valid {
-			user.DefaultPage = defaultPage.String
-		}
+		err = rows.Scan(&user.Userid, &user.Login, &user.Fullname, &info, &user.IsEnabled,
+			&user.Isadmin, &user.DomainID, &user.DomainName)
+
 		if info.Valid {
 			user.Info = info.String
 		}
@@ -203,10 +200,12 @@ func SearchUsers(searchText string, domainid, usertype int) ([]types.UserInfo, e
 		domid = "1"
 	}
 
-	query := "SELECT * FROM users\n" +
-		"INNER JOIN domains ON domains.domainid = users.domainid\n" +
-		"WHERE (login = ? or login like '%" + searchText + "%'\n" +
-		"OR fullName LIKE '%" + searchText + "%') and( users.domainID = ? or ? )  " + usrtype
+	query := `SELECT userID, login, fullname, info, users.isEnabled, isAdmin, 
+		 users.domainID, domainName FROM users
+		 INNER JOIN domains ON domains.domainid = users.domainid 
+		WHERE (login = ? or login like '%` + searchText + `%'` +
+		`OR fullName LIKE '%` + searchText + `%') and( users.domainID = ? or ? )  ` +
+		usrtype
 	if usrtype != "" {
 		rows, err = db.Query(query, searchText, domainid, domid, usertype)
 		if err != nil {
@@ -227,9 +226,9 @@ func SearchUsers(searchText string, domainid, usertype int) ([]types.UserInfo, e
 		var remoteURL sql.NullString
 		var defaultPage sql.NullString
 		var info sql.NullString
-		err = rows.Scan(&user.Userid, &user.Login, &user.Password,
-			&user.Fullname, &info, &user.Isenabled, &user.Isadmin, &user.DomainID, &user.DomainID, &user.DomainName, &user.IsLocal,
-			&user.DefaultDomain, &user.IsEnabled, &remoteURL, &defaultPage)
+		err = rows.Scan(&user.Userid, &user.Login,
+			&user.Fullname, &info, &user.IsEnabled, &user.Isadmin, &user.DomainID,
+			&user.DomainName)
 		if remoteURL.Valid {
 			user.RemoteURL = remoteURL.String
 		}
@@ -252,7 +251,7 @@ func SearchUsers(searchText string, domainid, usertype int) ([]types.UserInfo, e
 func ModifyUserInfo(userinfo types.UserInfo) (id int64, err error) {
 
 	sql := "update users set login = ?, fullname = ?, isEnabled = ?, info = ?, isadmin =?, domainID = ? where userid = ?;"
-	result, err := db.Exec(sql, userinfo.Login, userinfo.Fullname, userinfo.Isenabled, userinfo.Info, userinfo.Isadmin, userinfo.DomainID, userinfo.Userid)
+	result, err := db.Exec(sql, userinfo.Login, userinfo.Fullname, userinfo.IsEnabled, userinfo.Info, userinfo.Isadmin, userinfo.DomainID, userinfo.Userid)
 	if err != nil {
 		util.WriteErrorLog("Error in ModifyUserInfo: " + err.Error())
 		return 0, err
