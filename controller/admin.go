@@ -6,21 +6,17 @@ import (
 	"code-a/util"
 	"fmt"
 	"net/http"
-	"strconv"
 )
 
 func AddAdmin(w http.ResponseWriter, r *http.Request) {
 
 	configExists := util.IsConfigFileExist()
-	useridStr := GetCookieValue(r, "userid")
-	userID, _ := strconv.Atoi(useridStr)
 	added := false
-	success := CheckSession(r, userID)
 	version := getVersion()
 	var setup types.SetUp
 	setup.Version = version
 
-	if (configExists) && ((useridStr == "") || (!success)) {
+	if configExists {
 		thereIs, _ := model.ThereIsUser()
 		if thereIs {
 			http.Redirect(w, r, AppPath+"/Login", http.StatusTemporaryRedirect)
@@ -40,7 +36,7 @@ func AddAdmin(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		http.Redirect(w, r, AppPath+"/Home", http.StatusTemporaryRedirect)
+		http.Redirect(w, r, AppPath+"/Setup", http.StatusTemporaryRedirect)
 
 	}
 
