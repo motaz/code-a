@@ -14,8 +14,7 @@ import (
 	"net/http"
 )
 
-const appPath = "/codea"
-const VERSION = "1.2.2 r30-June"
+const VERSION = "1.2.3 r20-August"
 
 //go:embed view
 var view embed.FS
@@ -29,6 +28,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	util.WriteLog("code-a version: " + VERSION)
+	appPath := controller.AppPath
 	mux.Handle(appPath+"/assets/", http.StripPrefix(appPath, http.FileServer(http.FS(assets))))
 
 	// Portal Pathes
@@ -37,7 +37,7 @@ func main() {
 	mux.HandleFunc(appPath+"/Login", controller.Login)
 	mux.HandleFunc(appPath+"/Logout", controller.Logout)
 	mux.HandleFunc(appPath+"/Setup", controller.Setup)
-	mux.HandleFunc(appPath+"/AddAdmin", controller.CheckUser(controller.AddAdmin))
+	mux.HandleFunc(appPath+"/AddAdmin", controller.AddAdmin)
 	mux.HandleFunc(appPath+"/Home", controller.CheckUser(controller.Home))
 	mux.HandleFunc(appPath+"/AddUser", controller.CheckUser(controller.AddUser))
 	mux.HandleFunc(appPath+"/Authenticate", controller.CheckUser(controller.Authenticate))
@@ -57,5 +57,6 @@ func main() {
 }
 
 func redirect(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, appPath, http.StatusTemporaryRedirect)
+	fmt.Println("I'm here: ", r.URL)
+	http.Redirect(w, r, controller.AppPath+"/", http.StatusTemporaryRedirect)
 }

@@ -19,17 +19,18 @@ func AddAdmin(w http.ResponseWriter, r *http.Request) {
 	version := getVersion()
 	var setup types.SetUp
 	setup.Version = version
+
 	if (configExists) && ((useridStr == "") || (!success)) {
 		thereIs, _ := model.ThereIsUser()
 		if thereIs {
-			http.Redirect(w, r, "Login", http.StatusFound)
+			http.Redirect(w, r, AppPath+"/Login", http.StatusTemporaryRedirect)
 
 		} else {
 			added = doAddAdmin(w, r)
 		}
 
 		if added {
-			http.Redirect(w, r, "Login", http.StatusFound)
+			http.Redirect(w, r, AppPath+"/Login", http.StatusTemporaryRedirect)
 		}
 		err := tpl.ExecuteTemplate(w, "AddAdmin.html", setup)
 		if err != nil {
@@ -37,7 +38,7 @@ func AddAdmin(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		http.Redirect(w, r, "Home", http.StatusFound)
+		http.Redirect(w, r, AppPath+"/Home", http.StatusTemporaryRedirect)
 
 	}
 

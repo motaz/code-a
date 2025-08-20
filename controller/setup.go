@@ -11,6 +11,8 @@ import (
 	"text/template"
 )
 
+const AppPath = "/codea"
+
 var (
 	tpl *template.Template
 )
@@ -38,9 +40,9 @@ func Setup(w http.ResponseWriter, r *http.Request) {
 		if setupSuccess {
 			success, _ := model.ThereIsUser()
 			if success {
-				http.Redirect(w, r, "Login", http.StatusFound)
+				http.Redirect(w, r, AppPath+"/Login", http.StatusFound)
 			} else {
-				http.Redirect(w, r, "AddAdmin", http.StatusFound)
+				http.Redirect(w, r, AppPath+"/AddAdmin", http.StatusFound)
 			}
 		} else {
 			success, _ := model.ThereIsUser()
@@ -68,7 +70,7 @@ func Setup(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	} else {
-		http.Redirect(w, r, "Home", http.StatusFound)
+		http.Redirect(w, r, AppPath+"/Home", http.StatusFound)
 	}
 
 	err := tpl.ExecuteTemplate(w, "setup.html", setup)

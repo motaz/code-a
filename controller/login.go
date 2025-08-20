@@ -21,7 +21,7 @@ func getVersion() string {
 func Login(w http.ResponseWriter, r *http.Request) {
 	var data types.Home
 	if !util.IsConfigFileExist() {
-		http.Redirect(w, r, "Setup", http.StatusFound)
+		http.Redirect(w, r, AppPath+"/Setup", http.StatusFound)
 		return
 	}
 	success, _ := model.ThereIsUser()
@@ -69,7 +69,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 						} else {
 							if userInfo.Isadmin {
-								http.Redirect(w, r, "Home", http.StatusFound)
+								http.Redirect(w, r, AppPath+"/Home", http.StatusFound)
 
 							} else {
 								http.Redirect(w, r, domaininfo.DefaultPage, http.StatusFound)
@@ -88,7 +88,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 		}
 	} else {
-		http.Redirect(w, r, "AddAdmin", http.StatusFound)
+		http.Redirect(w, r, AppPath+"/AddAdmin", http.StatusFound)
 	}
 	data.Domains, _ = model.GetDomains(false)
 

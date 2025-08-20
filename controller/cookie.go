@@ -101,7 +101,7 @@ func CheckUser(next http.HandlerFunc) http.HandlerFunc {
 			next.ServeHTTP(w, r)
 			return
 		}
-		http.Redirect(w, r, "Login", http.StatusFound)
+		http.Redirect(w, r, AppPath+"/Login", http.StatusFound)
 	}
 }
 
