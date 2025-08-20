@@ -38,7 +38,7 @@ func GetConfigValue(key, defaulValue string) string {
 }
 
 func SetConfigValue(key, value string) bool {
-	return codeutils.SetConfigValue("codeA.ini", key, value)
+	return codeutils.SetConfigValue("config.ini", key, value)
 }
 
 func GetMD5(text string) string {
