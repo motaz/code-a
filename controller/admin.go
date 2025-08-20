@@ -24,6 +24,7 @@ func AddAdmin(w http.ResponseWriter, r *http.Request) {
 		thereIs, _ := model.ThereIsUser()
 		if thereIs {
 			http.Redirect(w, r, AppPath+"/Login", http.StatusTemporaryRedirect)
+			return
 
 		} else {
 			added = doAddAdmin(w, r)
@@ -31,10 +32,11 @@ func AddAdmin(w http.ResponseWriter, r *http.Request) {
 
 		if added {
 			http.Redirect(w, r, AppPath+"/Login", http.StatusTemporaryRedirect)
-		}
-		err := tpl.ExecuteTemplate(w, "AddAdmin.html", setup)
-		if err != nil {
-			util.WriteErrorLog("error in setup template: " + err.Error())
+		} else {
+			err := tpl.ExecuteTemplate(w, "AddAdmin.html", setup)
+			if err != nil {
+				util.WriteErrorLog("error in setup template: " + err.Error())
+			}
 		}
 
 	} else {
