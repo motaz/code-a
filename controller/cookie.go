@@ -114,7 +114,8 @@ func setHeader(w http.ResponseWriter, r *http.Request, tabName string) types.Hom
 	home.Page = tabName
 	home.IsAdmin = home.User.Isadmin
 	home.Username = GetCookieValue(r, "user")
-	fmt.Println("Home User from home :", home.User)
+	// fmt.Println("Home User from home :", home.User)
 
 	return home
 }
+
