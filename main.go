@@ -50,8 +50,8 @@ func main() {
 	mux.HandleFunc(appPath+"/CheckLogin", controller.CheckLoginAPI)
 	mux.HandleFunc(appPath+"/CheckSession", controller.CheckSessionAPI)
 	mux.HandleFunc(appPath+"/RemoveSession", controller.RemoveSessionAPI)
-	fmt.Println("http://localhost:2023")
-	log.Fatal(http.ListenAndServe(":2023", mux))
+	fmt.Println("http://localhost:2024")
+	log.Fatal(http.ListenAndServe(":2024", mux))
 }
 
 func redirect(w http.ResponseWriter, r *http.Request) {
