@@ -1,0 +1,5 @@
+025-08-21 07:59:10.948: [ error in getUserInfo sql: no rows in result set]
+025-08-21 08:32:59.195: [error in GetUserIDsql: no rows in result set]
+025-08-21 12:46:15.042: [error in CheckUser sql: no rows in result set]
+025-08-21 13:35:55.975: [ error in getUserInfo sql: no rows in result set]
+025-08-21 13:36:08.192: [error in CheckUser sql: no rows in result set]

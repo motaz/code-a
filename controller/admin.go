@@ -74,6 +74,7 @@ func doAddAdmin(w http.ResponseWriter, r *http.Request) bool {
 			}
 			if id != 0 {
 				var user types.Users
+
 				user.Login = login
 				user.Password = password
 				user.Fullname = fullname

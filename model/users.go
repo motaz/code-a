@@ -68,7 +68,7 @@ func ThereIsUser() (success bool, err error) {
 func GetUserInfo(userid int) (user types.UserInfo, err error) {
 
 	query := `SELECT userID, login, fullname, info, users.isEnabled, isAdmin, 
-		users.domainID, domainName FROM CodeA.users
+		users.domainID, domainName , Password FROM CodeA.users
 		INNER JOIN CodeA.domains ON domains.domainid = users.domainid ` +
 		`where userID = ? `
 
@@ -76,7 +76,7 @@ func GetUserInfo(userid int) (user types.UserInfo, err error) {
 	var remoteURL sql.NullString
 	var defaultPage sql.NullString
 	err = rows.Scan(&user.Userid, &user.Login, &user.Fullname, &user.Info,
-		&user.IsEnabled, &user.Isadmin, &user.DomainID, &user.DomainName)
+		&user.IsEnabled, &user.Isadmin, &user.DomainID, &user.DomainName, &user.Password)
 
 	if remoteURL.Valid {
 		user.RemoteURL = remoteURL.String

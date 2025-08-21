@@ -20,14 +20,17 @@ type DomainType struct {
 }
 
 type Users struct {
-	Userid    int
-	Login     string
-	Password  string
-	Fullname  string
+	Userid   int
+	Login    string
+	Password string
+	Fullname string
+	// Email            string
 	Info      string
 	Isenabled int
 	Isadmin   int
 	DomainID  int
+	// ResetToken       string
+	// ResetTokenExpiry *time.Time
 }
 type UserInfo struct {
 	Userid        int
