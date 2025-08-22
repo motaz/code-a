@@ -11,7 +11,6 @@ import (
 	"code-a/util"
 	"embed"
 	"fmt"
-	"log"
 	"net/http"
 )
 
@@ -51,7 +50,10 @@ func main() {
 	mux.HandleFunc(appPath+"/CheckSession", controller.CheckSessionAPI)
 	mux.HandleFunc(appPath+"/RemoveSession", controller.RemoveSessionAPI)
 	fmt.Println("http://localhost:2024")
-	log.Fatal(http.ListenAndServe(":2024", mux))
+	err := http.ListenAndServe(":2024", mux)
+	if err != nil {
+		util.WriteLog("Error in listening: " + err.Error())
+	}
 }
 
 func redirect(w http.ResponseWriter, r *http.Request) {
