@@ -43,7 +43,7 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 					model.DeleteSessionByUsername(home.User.Login, home.User.DomainName)
 					var user types.UserInfo
 					user, _ = model.GetUserInfo(home.UserID)
-					fmt.Println("userInfo:", user)
+					//fmt.Println("userInfo:", user)
 				}
 			}
 		}
