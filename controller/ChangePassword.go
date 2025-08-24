@@ -2,7 +2,9 @@ package controller
 
 import (
 	"code-a/model"
+	"code-a/types"
 	"code-a/util"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -39,6 +41,9 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 					home.AlertType = "alert-success"
 					home.ResponseMessage = "password has been changed successfully"
 					model.DeleteSessionByUsername(home.User.Login, home.User.DomainName)
+					var user types.UserInfo
+					user, _ = model.GetUserInfo(home.UserID)
+					fmt.Println("userInfo:", user)
 				}
 			}
 		}

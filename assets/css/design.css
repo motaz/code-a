@@ -578,3 +578,7 @@ Nav
 	background-color: red;
 }
 
+.card-body .reset-password input{
+  outline :auto;
+	border: 1px solid #b2b2b2;
+}
