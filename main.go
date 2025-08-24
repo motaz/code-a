@@ -49,8 +49,8 @@ func main() {
 	mux.HandleFunc(appPath+"/CheckLogin", controller.CheckLoginAPI)
 	mux.HandleFunc(appPath+"/CheckSession", controller.CheckSessionAPI)
 	mux.HandleFunc(appPath+"/RemoveSession", controller.RemoveSessionAPI)
-	fmt.Println("http://localhost:2023")
-	err := http.ListenAndServe(":2023", mux)
+	fmt.Println("http://localhost:2024")
+	err := http.ListenAndServe(":2024", mux)
 	if err != nil {
 		util.WriteLog("Error in listening: " + err.Error())
 	}
