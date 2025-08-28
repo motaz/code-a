@@ -2,16 +2,13 @@ package controller
 
 import (
 	"code-a/model"
-	"code-a/types"
 	"code-a/util"
-	"fmt"
 	"net/http"
 	"strconv"
 )
 
 func ChangePassword(w http.ResponseWriter, r *http.Request) {
 	home := setHeader(w, r, "myadmin")
-	// fmt.Println("Home User:", home.User)
 	if r.FormValue("resetpassword") != "" {
 		oldPassword := r.FormValue("oldpassword")
 		newPassword := r.FormValue("newpassword")
@@ -25,7 +22,6 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 			home.AlertType = "alert-danger"
 
 		} else if home.User.Password != util.GetMD5(oldPassword) {
-			// fmt.Println("old password:", home.User.Password, "new password:", util.GetMD5(oldPassword))
 			home.ResponseMessage = "old password is wrong"
 			home.AlertType = "alert-danger"
 
@@ -41,9 +37,6 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 					home.AlertType = "alert-success"
 					home.ResponseMessage = "password has been changed successfully"
 					model.DeleteSessionByUsername(home.User.Login, home.User.DomainName)
-					var user types.UserInfo
-					user, _ = model.GetUserInfo(home.UserID)
-					fmt.Println("userInfo:", user)
 				}
 			}
 		}
